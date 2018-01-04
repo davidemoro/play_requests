@@ -57,6 +57,10 @@ class RequestsProvider(object):
                     e)
                 raise e
 
+    def command_OPTIONS(self, command):
+        """ OPTIONS command """
+        self._make_request('OPTIONS', command)
+
     def command_HEAD(self, command):
         """ HEAD command """
         self._make_request('POST', command)
