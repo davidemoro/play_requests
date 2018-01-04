@@ -33,7 +33,7 @@ This project defines a new pytest-play_ command:
 
 ::
 
-    {'type': 'print', 'provider': 'play_requests'}
+    TODO
 
 You can add more commands adding new methods to the command provider implementation in ``providers.py`` module.
 

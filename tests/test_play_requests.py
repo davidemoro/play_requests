@@ -18,5 +18,4 @@ def test_post():
                 },
             'timeout': 2.5
              },
-        'assertion': 'python: response.status_code == 200'
     })

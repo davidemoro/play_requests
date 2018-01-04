@@ -1,5 +1,5 @@
 class RequestsProvider(object):
-    """ Print provider """
+    """ Requests command provider """
 
     def __init__(self, engine):
         self.engine = engine
@@ -8,8 +8,21 @@ class RequestsProvider(object):
         """ Returns the auth object """
         raise NotImplementedError
 
-    def _make_file(self, command):
+    def _make_files(self, command):
         """ Returns the file object for a given path """
+        raise NotImplementedError
+
+    def _merge_payload(self, parameters):
+        """ Return merged command parameters
+            with the default payload available in
+            self.engine.variables['requests']['default_payload']
+        """
+        raise NotImplementedError
+
+    def _make_assertion(self, response, assertion):
+        """ Make an assertion based on python
+            expression against the response
+        """
         raise NotImplementedError
 
     def command_head(self, command):

@@ -13,6 +13,7 @@ with open('CHANGES.rst') as history_file:
 
 requirements = [
     'requests',
+    'pytest-play',
 ]
 
 setup_requirements = [
