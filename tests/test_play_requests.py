@@ -4,11 +4,19 @@
 """Tests for `play_requests` package."""
 
 
-def test_provider():
+def test_post():
     from play_requests import providers
-    print_provider = providers.NewProvider(None)
-    assert print_provider.engine is None
-    print_provider.command_print(
-        {'provider': 'play_requests',
-         'type': 'print',
-         'message': 'Hello, World!'})
+    provider = providers.RequestsProvider(None)
+    assert provider.engine is None
+    provider.command_post({
+        'provider': 'play_requests',
+        'type': 'post',
+        'url': 'http://something/1',
+        'parameters': {
+            'json': {
+                'foo': 'bar',
+                },
+            'timeout': 2.5
+             },
+        'assertion': 'python: response.status_code == 200'
+    })
