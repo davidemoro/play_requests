@@ -2,7 +2,6 @@ import json
 import logging
 import re
 import requests
-from RestrictedPython import RestrictionCapableEval
 
 
 class RequestsProvider(object):
@@ -97,22 +96,13 @@ class RequestsProvider(object):
         """
         assertion = command.get('assertion', None)
         if assertion:
-            self._exec(
-                assertion,
-                {'response': response,
-                 'variables': self.engine.variables,
-                 'len': len,
-                 'list': list,
-                 'match': re.match,
-                 }
+            self.engine.execute_command(
+                {'provider': 'python',
+                 'type': 'assert',
+                 'expression': assertion
+                 },
+                extra_context={'response': response}
             )
-
-    def _exec(self, assertion, context):
-        """ Make an assertion against a given context
-        """
-
-        context = context.copy()
-        assert RestrictionCapableEval(assertion).eval(context)
 
     def _make_request(self, method, command):
         """ Make a request plus assertions """

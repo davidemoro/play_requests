@@ -1,0 +1,2 @@
+-e git+https://github.com/tierratelematics/play_python.git#egg=play-python
+-e git+https://github.com/tierratelematics/pytest-play.git@extra-context#egg=pytest-play

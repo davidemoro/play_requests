@@ -13,8 +13,7 @@ with open('CHANGES.rst') as history_file:
 
 requirements = [
     'requests',
-    'pytest-pypom-navigation',
-    'RestrictedPython>=4.0b2'
+    'play_python'
 ]
 
 setup_requirements = [
@@ -25,6 +24,8 @@ test_requirements = [
     'pytest',
     'mock',
     'requests-mock',
+    'pytest-cov',
+    'pytest-play',
 ]
 
 setup(
@@ -39,7 +40,7 @@ setup(
     packages=find_packages(include=['play_requests']),
     entry_points={
         'playcommands': [
-            'print = play_requests.providers:NewProvider',
+            'requests = play_requests.providers:RequestsProvider',
         ],
     },
     include_package_data=True,
