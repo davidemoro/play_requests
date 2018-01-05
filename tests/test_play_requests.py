@@ -285,7 +285,7 @@ def test_post_files_path():
                 file_path, 'rb') is None
 
 
-def test_post_default_headers():
+def test_post_default_parameters():
     """ If all of your calls have a set of common parameters
         you can omit them creating some defaults in the
         engine variables
@@ -306,6 +306,67 @@ def test_post_default_headers():
                 }
             }
         }
+
+        def _parametrize(x):
+            from pypom_navigation.parametrizer import Parametrizer
+            parametrizer = Parametrizer(mock_engine.variables)
+            return parametrizer.parametrize(x)
+
+        mock_engine.parametrizer.parametrize = _parametrize
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        provider.command_POST({
+            'provider': 'play_requests',
+            'type': 'POST',
+            'url': 'http://something/1',
+            'parameters': {
+                'json': {
+                    'foo': 'bar',
+                    },
+                'timeout': 2.5
+                 },
+        })
+
+        history = m.request_history
+        assert len(history) == 1
+        assert history[0].method == 'POST'
+        assert history[0].url == 'http://something/1'
+        assert history[0].json() == {'foo': 'bar'}
+        assert history[0].timeout == 2.5
+
+
+def test_post_default_parameters_parametrized():
+    """ If all of your calls have a set of common parameters
+        you can omit them creating some defaults in the
+        engine variables
+    """
+    import requests_mock
+    import mock
+    with requests_mock.mock() as m:
+        m.request('POST',
+                  'http://something/1',
+                  request_headers={
+                      'user-agent': 'my-app/0.0.1'},
+                  json={'status': 'ok'})
+        mock_engine = mock.MagicMock()
+        mock_engine.variables = {
+            'myapp': 'my-app',
+            'play_requests': {
+                'parameters': {
+                    'headers': {
+                        'user-agent': '$myapp/0.0.1'
+                    }
+                }
+            }
+        }
+
+        def _parametrize(x):
+            from pypom_navigation.parametrizer import Parametrizer
+            parametrizer = Parametrizer(mock_engine.variables)
+            return parametrizer.parametrize(x)
+
+        mock_engine.parametrizer.parametrize = _parametrize
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
         assert provider.engine is mock_engine

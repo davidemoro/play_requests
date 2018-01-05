@@ -13,7 +13,7 @@ with open('CHANGES.rst') as history_file:
 
 requirements = [
     'requests',
-    'pytest-play',
+    'pytest-pypom-navigation',
 ]
 
 setup_requirements = [

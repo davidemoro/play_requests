@@ -1,3 +1,4 @@
+import json
 import logging
 import re
 import requests
@@ -63,7 +64,11 @@ class RequestsProvider(object):
         """
         play_requests = self.engine.variables.get('play_requests', {})
         if play_requests:
-            self._merge(command, play_requests)
+            default = json.loads(
+                self.engine.parametrizer.parametrize(
+                    json.dumps(play_requests)))
+            if play_requests:
+                self._merge(command, default)
 
     def _merge(self, a, b, path=None):
         """ merges b and a configurations.
