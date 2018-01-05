@@ -2,6 +2,7 @@ import json
 import logging
 import re
 import requests
+from RestrictedPython import RestrictionCapableEval
 
 
 class RequestsProvider(object):
@@ -90,17 +91,33 @@ class RequestsProvider(object):
                 a[key] = b[key]
         return a
 
-    def _make_assertion(self, response, assertion):
+    def _make_assertion(self, response, command):
         """ Make an assertion based on python
             expression against the response
         """
-        self.logger.warning('Not yet implemented')
+        assertion = command.get('assertion', None)
+        if assertion:
+            self._exec(
+                assertion,
+                {'response': response,
+                 'variables': self.engine.variables,
+                 'len': len,
+                 'list': list,
+                 'match': re.match,
+                 }
+            )
+
+    def _exec(self, assertion, context):
+        """ Make an assertion against a given context
+        """
+
+        context = context.copy()
+        assert RestrictionCapableEval(assertion).eval(context)
 
     def _make_request(self, method, command):
         """ Make a request plus assertions """
         cmd = command.copy()
         url = cmd['url']
-        assertion = cmd.get('assertion', {})
 
         self._merge_payload(cmd)
         self._make_auth(cmd)
@@ -113,15 +130,14 @@ class RequestsProvider(object):
             method,
             url,
             **cmd['parameters'])
-        if assertion:
-            try:
-                self._make_assertion(response, assertion)
-            except Exception as e:
-                self.logger.exception(
-                    'Exception for command %r',
-                    cmd,
-                    e)
-                raise e
+        try:
+            self._make_assertion(response, cmd)
+        except Exception as e:
+            self.logger.exception(
+                'Exception for command %r',
+                cmd,
+                e)
+            raise e
 
     def command_OPTIONS(self, command):
         """ OPTIONS command """

@@ -388,3 +388,129 @@ def test_post_default_parameters_parametrized():
         assert history[0].url == 'http://something/1'
         assert history[0].json() == {'foo': 'bar'}
         assert history[0].timeout == 2.5
+
+
+@pytest.mark.parametrize('assertion', [
+    'response.status_code == 200',
+    'response.status_code != 404',
+    'response.status_code == 200 and response.json()["status"] == "ok"',
+    '"status" in response.json()',
+    'variables["foo"] == "baz"',
+    '"foo" in variables',
+    'len([1]) == 1',
+    '[1][0] == 1',
+    'len(list(response.json().items())) == 1',
+    'variables["foo"].upper() == "BAZ"',
+    'match(r"^([0-9]*)-data", "123-data")',
+    'match(r"^([0-9]*)-data", "123-data").group(1) == "123"'
+])
+def test_post_assertion(assertion):
+    import requests_mock
+    import mock
+    with requests_mock.mock() as m:
+        m.request('POST',
+                  'http://something/1',
+                  json={'status': 'ok'})
+        mock_engine = mock.MagicMock()
+        mock_engine.variables = {'foo': 'baz'}
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        provider.command_POST({
+            'provider': 'play_requests',
+            'type': 'POST',
+            'url': 'http://something/1',
+            'parameters': {
+                'json': {
+                    'foo': 'bar',
+                    },
+                'timeout': 2.5
+                 },
+            'assertion': assertion
+        })
+
+        history = m.request_history
+        assert len(history) == 1
+        assert history[0].method == 'POST'
+        assert history[0].url == 'http://something/1'
+        assert history[0].json() == {'foo': 'bar'}
+        assert history[0].timeout == 2.5
+
+
+def test_post_assertion_ko():
+    import requests_mock
+    import mock
+    with requests_mock.mock() as m:
+        m.request('POST',
+                  'http://something/1',
+                  json={'status': 'ok'})
+        mock_engine = mock.MagicMock()
+        mock_engine.variables = {'foo': 'baz'}
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        with pytest.raises(AssertionError):
+            provider.command_POST({
+                'provider': 'play_requests',
+                'type': 'POST',
+                'url': 'http://something/1',
+                'parameters': {
+                    'json': {
+                        'foo': 'bar',
+                        },
+                    'timeout': 2.5
+                     },
+                'assertion': 'response.status_code == 404'
+            })
+
+        history = m.request_history
+        assert len(history) == 1
+        assert history[0].method == 'POST'
+        assert history[0].url == 'http://something/1'
+        assert history[0].json() == {'foo': 'bar'}
+        assert history[0].timeout == 2.5
+
+
+@pytest.mark.parametrize('assertion', [
+    'open("/etc/passwd", "r")',
+    'open',
+    'import os',
+    '__file__',
+    '__file__',
+    '__builtins__.__dict__["bytes"]',
+    '__builtins__.__dict__["bytes"] = "pluto"',
+    'prova = lambda: 1',
+    'os = 1',
+])
+def test_post_assertion_bad(assertion):
+    import requests_mock
+    import mock
+    with requests_mock.mock() as m:
+        m.request('POST',
+                  'http://something/1',
+                  json={'status': 'ok'})
+        mock_engine = mock.MagicMock()
+        mock_engine.variables = {'foo': 'baz'}
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        with pytest.raises(Exception):
+            provider.command_POST({
+                'provider': 'play_requests',
+                'type': 'POST',
+                'url': 'http://something/1',
+                'parameters': {
+                    'json': {
+                        'foo': 'bar',
+                        },
+                    'timeout': 2.5
+                     },
+                'assertion': assertion
+            })
+
+        history = m.request_history
+        assert len(history) == 1
+        assert history[0].method == 'POST'
+        assert history[0].url == 'http://something/1'
+        assert history[0].json() == {'foo': 'bar'}
+        assert history[0].timeout == 2.5

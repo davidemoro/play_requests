@@ -14,6 +14,7 @@ with open('CHANGES.rst') as history_file:
 requirements = [
     'requests',
     'pytest-pypom-navigation',
+    'RestrictedPython>=4.0b2'
 ]
 
 setup_requirements = [
