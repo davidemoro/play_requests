@@ -28,14 +28,16 @@ pytest-play plugin driving the famous python requests library for making HTTP ca
 Features
 --------
 
+This pytest-play_ command provider let you drive a
+Python request_ HTTP library using a json configuration file
+containing a set of pytest-play_ commands.
 
-This project defines a new pytest-play_ command:
+
+Here you can see some commands:
 
 ::
 
     TODO
-
-You can add more commands adding new methods to the command provider implementation in ``providers.py`` module.
 
 More info and examples on:
 
@@ -52,4 +54,5 @@ This package was created with Cookiecutter_ and the cookiecutter-play-plugin_ (b
 .. _`cookiecutter-play-plugin`: https://github.com/tierratelematics/cookiecutter-play-plugin
 .. _pytest-play: https://github.com/tierratelematics/pytest-play
 .. _cookiecutter-qa: https://github.com/tierratelematics/cookiecutter-qa
+.. _request: http://docs.python-requests.org/en/master/user/quickstart
 
