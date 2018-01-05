@@ -61,7 +61,29 @@ class RequestsProvider(object):
         """ Merge command with the default command available in
             self.engine.variables['requests']['default_payload']
         """
-        self.logger.warning('Not yet implemented')
+        play_requests = self.engine.variables.get('play_requests', {})
+        if play_requests:
+            self._merge(command, play_requests)
+
+    def _merge(self, a, b, path=None):
+        """ merges b and a configurations.
+            Based on http://bit.ly/2uFUHgb
+         """
+        if path is None:
+            path = []
+
+        for key in b:
+            if key in a:
+                if isinstance(a[key], dict) and isinstance(b[key], dict):
+                    self._merge(a[key], b[key], path + [str(key)])
+                elif a[key] == b[key]:
+                    pass  # same leaf value
+                else:
+                    # b wins
+                    a[key] = b[key]
+            else:
+                a[key] = b[key]
+        return a
 
     def _make_assertion(self, response, assertion):
         """ Make an assertion based on python
