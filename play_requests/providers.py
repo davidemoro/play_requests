@@ -10,30 +10,33 @@ class RequestsProvider(object):
         self.logger = logging.getLogger()
 
     def _make_auth(self, command):
-        """ Returns the auth object """
-        pass
+        """ Update auth on the command """
+        self.logger.warning('Not yet implemented')
 
     def _make_files(self, command):
-        """ Returns the file object for a given path """
-        pass
+        """ Update files on the command """
+        self.logger.warning('Not yet implemented')
+
+    def _make_cookies(self, command):
+        """ Update cookies on the command """
+        self.logger.warning('Not yet implemented')
 
     def _merge_payload(self, command):
         """ Merge command with the default command available in
             self.engine.variables['requests']['default_payload']
         """
-        pass
+        self.logger.warning('Not yet implemented')
 
     def _make_assertion(self, response, assertion):
         """ Make an assertion based on python
             expression against the response
         """
-        pass
+        self.logger.warning('Not yet implemented')
 
     def _make_request(self, method, command):
         """ Make a request plus assertions """
         cmd = command.copy()
         url = cmd['url']
-        method = cmd['type']
         assertion = cmd.get('assertion', {})
 
         self._merge_payload(cmd)
@@ -63,11 +66,11 @@ class RequestsProvider(object):
 
     def command_HEAD(self, command):
         """ HEAD command """
-        self._make_request('POST', command)
+        self._make_request('HEAD', command)
 
     def command_GET(self, command):
         """ GET command """
-        self._make_request('POST', command)
+        self._make_request('GET', command)
 
     def command_POST(self, command):
         """ POST command """
@@ -75,12 +78,12 @@ class RequestsProvider(object):
 
     def command_PUT(self, command):
         """ PUT command """
-        self._make_request('POST', command)
+        self._make_request('PUT', command)
 
     def command_PATCH(self, command):
         """ PATCH command """
-        self._make_request('POST', command)
+        self._make_request('PATCH', command)
 
     def command_DELETE(self, command):
         """ DELETE command """
-        self._make_request('POST', command)
+        self._make_request('DELETE', command)
