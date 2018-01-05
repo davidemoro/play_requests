@@ -183,3 +183,48 @@ def test_post_headers():
                     'timeout': 2.5
                      },
             })
+
+
+@pytest.mark.parametrize('command', [
+    {'provider': 'play_requests',
+     'type': 'POST',
+     'url': 'http://something/1',
+     'parameters': {
+         'files': {
+             'filecsv': (
+                 'report.csv',
+                 'some,data',
+                 )
+             },
+         },
+     },
+    {'provider': 'play_requests',
+     'type': 'POST',
+     'url': 'http://something/1',
+     'parameters': {
+         'files': {
+             'filecsv': (
+                 'report.csv',
+                 'some,data',
+                 'application/csv',
+                 {'Expires': '0'},
+                 )
+             },
+         },
+     },
+])
+def test_post_files(command):
+    import mock
+    with mock.patch('play_requests.providers.requests.request') \
+            as mock_requests:
+        mock_engine = mock.MagicMock()
+        mock_engine.variables = {}
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        provider.command_POST(command)
+
+        assert mock_requests.assert_called_once_with(
+            command['type'],
+            command['url'],
+            files=command['parameters']['files']) is None

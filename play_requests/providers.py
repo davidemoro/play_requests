@@ -1,4 +1,5 @@
 import logging
+import re
 import requests
 
 
@@ -14,8 +15,45 @@ class RequestsProvider(object):
         self.logger.warning('Not yet implemented')
 
     def _make_files(self, command):
-        """ Update files on the command """
-        self.logger.warning('Not yet implemented')
+        """ Update files on the command
+
+            requests accept parameters like that::
+
+                files = {
+                    'file': (
+                        'report.xls',
+                        open('report.xls', 'rb'),
+                        'application/vnd.ms-excel',
+                        {'Expires': '0'}
+                    )
+                }
+
+            or::
+
+                files = {
+                    'file': (
+                        'report.csv',
+                        'some,data\nanother,row\n')}
+        """
+        parameters = command.get('parameters', {})
+        files = parameters.get('files', {})
+        if files:
+            results = {}
+            for key, value in files.items():
+                filename = value[0]
+                file_data = value[1]
+                additional_args = value[2:]
+                if file_data.startswith('path:'):
+                    match = re.search(
+                        r'^[ \t]*path[ \t]*:[ \t]*([^$]*)',
+                        file_data)
+                    file_path = match.group(1)
+                    file_data = open(file_path, 'rb')
+                if additional_args:
+                    results[key] = (filename, file_data, value[2:])
+                else:
+                    results[key] = (filename, file_data)
+            command['parameters']['files'] = results
 
     def _make_cookies(self, command):
         """ Update cookies on the command """
