@@ -3,6 +3,7 @@
 
 """Tests for `play_requests` package."""
 
+import os
 import pytest
 
 
@@ -212,6 +213,24 @@ def test_post_headers():
              },
          },
      },
+    {'provider': 'play_requests',
+     'type': 'POST',
+     'url': 'http://something/1',
+     'parameters': {
+         'files': {
+             'filecsv1': (
+                 'report.csv',
+                 'some,data',
+                 ),
+             'filecsv': (
+                 'report.csv',
+                 'some,data',
+                 'application/csv',
+                 {'Expires': '0'},
+                 )
+             },
+         },
+     },
 ])
 def test_post_files(command):
     import mock
@@ -228,3 +247,39 @@ def test_post_files(command):
             command['type'],
             command['url'],
             files=command['parameters']['files']) is None
+
+
+def test_post_files_path():
+    file_path = os.path.join(os.path.dirname(__file__), 'file.csv')
+    command = {
+         'provider': 'play_requests',
+         'type': 'POST',
+         'url': 'http://something/1',
+         'parameters': {
+             'files': {
+                 'filecsv': (
+                     'file.csv',
+                     'path:{0}'.format(file_path),
+                     )
+                 },
+             },
+         }
+    import mock
+    with mock.patch('play_requests.providers.requests.request') \
+            as mock_requests:
+        with mock.patch('play_requests.providers.open') \
+                as mock_open:
+            file_mock = mock.MagicMock()
+            mock_open.return_value = file_mock
+            mock_engine = mock.MagicMock()
+            mock_engine.variables = {}
+            from play_requests import providers
+            provider = providers.RequestsProvider(mock_engine)
+            assert provider.engine is mock_engine
+            provider.command_POST(command)
+            assert mock_requests.assert_called_once_with(
+                command['type'],
+                command['url'],
+                files={'filecsv': ('file.csv', file_mock)}) is None
+            assert mock_open.assert_called_once_with(
+                file_path, 'rb') is None

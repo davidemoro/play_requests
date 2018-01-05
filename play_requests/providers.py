@@ -43,10 +43,8 @@ class RequestsProvider(object):
                 filename = value[0]
                 file_data = value[1]
                 additional_args = value[2:]
-                if file_data.startswith('path:'):
-                    match = re.search(
-                        r'^[ \t]*path[ \t]*:[ \t]*([^$]*)',
-                        file_data)
+                match = re.search(r'path:([^$]+)', file_data)
+                if match:
                     file_path = match.group(1)
                     file_data = open(file_path, 'rb')
                 if additional_args:
