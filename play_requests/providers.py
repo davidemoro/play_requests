@@ -68,7 +68,8 @@ class RequestsProvider(object):
                 self.engine.parametrizer.parametrize(
                     json.dumps(play_requests)))
             if play_requests:
-                self._merge(command, default)
+                return self._merge(default, command)
+        return command
 
     def _merge(self, a, b, path=None):
         """ merges b and a configurations.
@@ -101,33 +102,50 @@ class RequestsProvider(object):
                  'type': 'assert',
                  'expression': assertion
                  },
-                extra_context={'response': response}
+                response=response,
             )
+
+    def _condition(self, command):
+        """ Execute a command condition
+        """
+        return_value = False
+        condition = command.get('condition', None)
+        if condition:
+            return_value = self.engine.execute_command(
+                {'provider': 'python',
+                 'type': 'exec',
+                 'expression': condition
+                 }
+            )
+        else:
+            return_value = True
+        return return_value
 
     def _make_request(self, method, command):
         """ Make a request plus assertions """
-        cmd = command.copy()
-        url = cmd['url']
+        if self._condition(command):
+            cmd = command.copy()
+            url = cmd['url']
 
-        self._merge_payload(cmd)
-        self._make_auth(cmd)
-        self._make_files(cmd)
-        self.logger.debug('Requests call %r', cmd)
-        if 'parameters' not in cmd:
-            cmd['parameters'] = {}
+            cmd = self._merge_payload(cmd)
+            self._make_auth(cmd)
+            self._make_files(cmd)
+            self.logger.debug('Requests call %r', cmd)
+            if 'parameters' not in cmd:
+                cmd['parameters'] = {}
 
-        response = requests.request(
-            method,
-            url,
-            **cmd['parameters'])
-        try:
-            self._make_assertion(response, cmd)
-        except Exception as e:
-            self.logger.exception(
-                'Exception for command %r',
-                cmd,
-                e)
-            raise e
+            response = requests.request(
+                method,
+                url,
+                **cmd['parameters'])
+            try:
+                self._make_assertion(response, cmd)
+            except Exception as e:
+                self.logger.exception(
+                    'Exception for command %r',
+                    cmd,
+                    e)
+                raise e
 
     def command_OPTIONS(self, command, **kwargs):
         """ OPTIONS command """

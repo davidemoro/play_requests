@@ -43,6 +43,70 @@ def test_post1(play_json):
         assert history[0].timeout == 2.5
 
 
+@pytest.mark.parametrize('condition', [
+    '1 > 0',
+    '"$foo" == "SOMETHING"',
+])
+def test_post_condition_true(play_json, condition):
+    import requests_mock
+    with requests_mock.mock() as m:
+        m.request('POST',
+                  'http://something/1',
+                  json={'status': 'ok'})
+        mock_engine = play_json
+        mock_engine.variables = {'foo': 'SOMETHING'}
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        provider.command_POST({
+            'provider': 'play_requests',
+            'type': 'POST',
+            'url': 'http://something/1',
+            'condition': condition,
+            'parameters': {
+                'json': {
+                    'foo': 'bar',
+                    },
+                'timeout': 2.5
+                 },
+        })
+
+        history = m.request_history
+        assert len(history) == 1
+        assert history[0].method == 'POST'
+        assert history[0].url == 'http://something/1'
+        assert history[0].json() == {'foo': 'bar'}
+        assert history[0].timeout == 2.5
+
+
+@pytest.mark.parametrize('condition', [
+    '1 == 0',
+])
+def test_post_condition_false(play_json, condition):
+    import requests_mock
+    with requests_mock.mock() as m:
+        mock_engine = play_json
+        mock_engine.variables = {'foo': 'SOMETHING'}
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        provider.command_POST({
+            'provider': 'play_requests',
+            'type': 'POST',
+            'url': 'http://something/1',
+            'condition': condition,
+            'parameters': {
+                'json': {
+                    'foo': 'bar',
+                    },
+                'timeout': 2.5
+                 },
+        })
+
+        history = m.request_history
+        assert len(history) == 0
+
+
 def test_get(play_json):
     import requests_mock
     with requests_mock.mock() as m:
@@ -320,6 +384,108 @@ def test_post_default_parameters(play_json):
             'type': 'POST',
             'url': 'http://something/1',
             'parameters': {
+                'json': {
+                    'foo': 'bar',
+                    },
+                'timeout': 2.5
+                 },
+        })
+
+        history = m.request_history
+        assert len(history) == 1
+        assert history[0].method == 'POST'
+        assert history[0].url == 'http://something/1'
+        assert history[0].json() == {'foo': 'bar'}
+        assert history[0].timeout == 2.5
+
+
+def test_post_default_parameters_override(play_json):
+    """ If all of your calls have a set of common parameters
+        you can omit them creating some defaults in the
+        engine variables
+    """
+    import requests_mock
+    with requests_mock.mock() as m:
+        headers = {'user-agent': 'my-app/0.0.1'}
+        m.request('POST',
+                  'http://something/1',
+                  request_headers={'user-agent': 'another'},
+                  json={'status': 'ok'})
+        mock_engine = play_json
+        mock_engine.variables = {
+            'play_requests': {
+                'parameters': {
+                    'headers': headers
+                }
+            }
+        }
+
+        def _parametrize(x):
+            from pypom_navigation.parametrizer import Parametrizer
+            parametrizer = Parametrizer(mock_engine.variables)
+            return parametrizer.parametrize(x)
+
+        mock_engine.parametrizer.parametrize = _parametrize
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        provider.command_POST({
+            'provider': 'play_requests',
+            'type': 'POST',
+            'url': 'http://something/1',
+            'parameters': {
+                'headers': {'user-agent': 'another'},
+                'json': {
+                    'foo': 'bar',
+                    },
+                'timeout': 2.5
+                 },
+        })
+
+        history = m.request_history
+        assert len(history) == 1
+        assert history[0].method == 'POST'
+        assert history[0].url == 'http://something/1'
+        assert history[0].json() == {'foo': 'bar'}
+        assert history[0].timeout == 2.5
+
+
+def test_post_default_parameters_override_none(play_json):
+    """ If all of your calls have a set of common parameters
+        you can omit them creating some defaults in the
+        engine variables
+    """
+    import requests_mock
+    with requests_mock.mock() as m:
+        headers = {'user-agent': 'my-app/0.0.1'}
+        m.request('POST',
+                  'http://something/1',
+                  request_headers={},
+                  json={'status': 'ok'})
+        mock_engine = play_json
+        mock_engine.variables = {
+            'play_requests': {
+                'parameters': {
+                    'headers': headers
+                }
+            }
+        }
+
+        def _parametrize(x):
+            from pypom_navigation.parametrizer import Parametrizer
+            parametrizer = Parametrizer(mock_engine.variables)
+            return parametrizer.parametrize(x)
+
+        mock_engine.parametrizer.parametrize = _parametrize
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        provider.command_POST({
+            'provider': 'play_requests',
+            'type': 'POST',
+            'url': 'http://something/1',
+            'parameters': {
+                'headers': None,
                 'json': {
                     'foo': 'bar',
                     },
