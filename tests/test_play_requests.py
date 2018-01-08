@@ -154,6 +154,7 @@ def test_post_variables_assert_ko(play_json):
 @pytest.mark.parametrize('condition', [
     '1 > 0',
     '"$foo" == "SOMETHING"',
+    'variables["foo"] == "SOMETHING"',
 ])
 def test_post_condition_true(play_json, condition):
     import requests_mock
