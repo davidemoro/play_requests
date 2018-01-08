@@ -150,6 +150,7 @@ class RequestsProvider(object):
             if 'parameters' not in cmd:
                 cmd['parameters'] = {}
 
+            self.logger.debug('Effective HTTP call %r', cmd)
             response = requests.request(
                 method,
                 url,
