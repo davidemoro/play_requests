@@ -232,6 +232,24 @@ Merging rules:
   the ``Authorization`` header provided by the command will win and it will override just for the current
   call the default conflicting header value
 
+Assert response status code
+---------------------------
+
+::
+    {
+        "provider": "play_requests",
+        "type": "POST",
+        "url": "http://something/1",
+        "variable": "myvar",
+        "variable_expression": "response.json()",
+        "assertion": "response.status_code == 200",
+        "parameters": {
+            "json": {
+                "foo": "bar",
+                }
+            }
+        }
+
 More info and examples on:
 
 * pytest-play_, documentation
