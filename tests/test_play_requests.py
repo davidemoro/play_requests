@@ -43,6 +43,41 @@ def test_post1(play_json):
         assert history[0].timeout == 2.5
 
 
+def test_post_variables(play_json):
+    import requests_mock
+    with requests_mock.mock() as m:
+        m.request('POST',
+                  'http://something/1',
+                  json={'status': 'ok'})
+        mock_engine = play_json
+        mock_engine.variables = {}
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        provider.command_POST({
+            'provider': 'play_requests',
+            'type': 'POST',
+            'url': 'http://something/1',
+            'variable': 'myvar',
+            'variable_expression': 'response.json()',
+            'parameters': {
+                'json': {
+                    'foo': 'bar',
+                    },
+                'timeout': 2.5
+                 },
+        })
+
+        assert 'myvar' in mock_engine.variables
+        assert mock_engine.variables['myvar']['status'] == 'ok'
+        history = m.request_history
+        assert len(history) == 1
+        assert history[0].method == 'POST'
+        assert history[0].url == 'http://something/1'
+        assert history[0].json() == {'foo': 'bar'}
+        assert history[0].timeout == 2.5
+
+
 @pytest.mark.parametrize('condition', [
     '1 > 0',
     '"$foo" == "SOMETHING"',

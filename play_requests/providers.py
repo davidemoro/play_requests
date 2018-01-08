@@ -105,6 +105,22 @@ class RequestsProvider(object):
                 response=response,
             )
 
+    def _make_variable(self, response, command):
+        """ Make a variable based on python
+            expression against the response
+        """
+        expression = command.get('variable_expression', None)
+        if expression:
+            self.engine.variables[
+                command['variable']] = self \
+                    .engine.execute_command(
+                        {'provider': 'python',
+                         'type': 'exec',
+                         'expression': expression
+                         },
+                        response=response,
+                    )
+
     def _condition(self, command):
         """ Execute a command condition
         """
@@ -146,6 +162,7 @@ class RequestsProvider(object):
                     cmd,
                     e)
                 raise e
+            self._make_variable(response, cmd)
 
     def command_OPTIONS(self, command, **kwargs):
         """ OPTIONS command """
