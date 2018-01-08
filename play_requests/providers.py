@@ -129,30 +129,30 @@ class RequestsProvider(object):
                 e)
             raise e
 
-    def command_OPTIONS(self, command):
+    def command_OPTIONS(self, command, **kwargs):
         """ OPTIONS command """
         self._make_request('OPTIONS', command)
 
-    def command_HEAD(self, command):
+    def command_HEAD(self, command, **kwargs):
         """ HEAD command """
         self._make_request('HEAD', command)
 
-    def command_GET(self, command):
+    def command_GET(self, command, **kwargs):
         """ GET command """
         self._make_request('GET', command)
 
-    def command_POST(self, command):
+    def command_POST(self, command, **kwargs):
         """ POST command """
         self._make_request('POST', command)
 
-    def command_PUT(self, command):
+    def command_PUT(self, command, **kwargs):
         """ PUT command """
         self._make_request('PUT', command)
 
-    def command_PATCH(self, command):
+    def command_PATCH(self, command, **kwargs):
         """ PATCH command """
         self._make_request('PATCH', command)
 
-    def command_DELETE(self, command):
+    def command_DELETE(self, command, **kwargs):
         """ DELETE command """
         self._make_request('DELETE', command)
