@@ -40,7 +40,7 @@ setup(
     packages=find_packages(include=['play_requests']),
     entry_points={
         'playcommands': [
-            'requests = play_requests.providers:RequestsProvider',
+            'play_requests = play_requests.providers:RequestsProvider',
         ],
     },
     include_package_data=True,
