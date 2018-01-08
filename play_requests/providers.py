@@ -13,7 +13,7 @@ class RequestsProvider(object):
 
     def _make_auth(self, command):
         """ Update auth on the command """
-        self.logger.warning('Not yet implemented')
+        self.logger.warning('auth not yet implemented')
 
     def _make_files(self, command):
         """ Update files on the command
@@ -56,7 +56,7 @@ class RequestsProvider(object):
 
     def _make_cookies(self, command):
         """ Update cookies on the command """
-        self.logger.warning('Not yet implemented')
+        self.logger.warning('cookies not yet implemented')
 
     def _merge_payload(self, command):
         """ Merge command with the default command available in
