@@ -155,6 +155,7 @@ class RequestsProvider(object):
                 url,
                 **cmd['parameters'])
             try:
+                self._make_variable(response, cmd)
                 self._make_assertion(response, cmd)
             except Exception as e:
                 self.logger.exception(
@@ -162,7 +163,6 @@ class RequestsProvider(object):
                     cmd,
                     e)
                 raise e
-            self._make_variable(response, cmd)
 
     def command_OPTIONS(self, command, **kwargs):
         """ OPTIONS command """
