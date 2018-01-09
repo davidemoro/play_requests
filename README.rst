@@ -253,6 +253,37 @@ Assert response status code
             }
         }
 
+of if you want you can use the expression ``response.raise_for_status()`` instead of
+checking the exact match of status code.
+
+The ``raise_for_status`` call will raise an ``HTTPError`` if the ``HTTP`` request
+returned an unsuccessful status code.
+
+Redirections
+------------
+
+By default requests_ will perform location redirection for all verbs
+except HEAD:
+
+* http://docs.python-requests.org/en/master/user/quickstart/#redirection-and-history
+
+You can disable or enable redirects playing with the ``allow_redirects`` option::
+
+    {
+        "provider": "play_requests",
+        "type": "POST",
+        "url": "http://something/1",
+        "variable": "myvar",
+        "variable_expression": "response.json()",
+        "assertion": "response.status_code == 200",
+        "parameters": {
+            "allow_redirects": false,
+            "json": {
+                "foo": "bar",
+                }
+            }
+        }
+
 More info and examples on:
 
 * pytest-play_, documentation
