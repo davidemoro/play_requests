@@ -209,7 +209,7 @@ the play_python_ ``exec`` command::
         {
             "provider": "python",
             "type": "exec",
-            "expression": "variables.update({'play_requests': {'payload': {'headers': {'Authorization': '$bearer'}}}})"
+            "expression": "variables.update({'play_requests': {'parameters': {'headers': {'Authorization': '$bearer'}}}})"
         },
         {
              "provider": "play_requests",
@@ -236,6 +236,7 @@ Assert response status code
 ---------------------------
 
 ::
+
     {
         "provider": "play_requests",
         "type": "POST",
