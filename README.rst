@@ -18,7 +18,7 @@ play requests
      :alt: Updates
 
 
-pytest-play plugin driving the famous python requests library for making HTTP calls
+pytest-play plugin driving the famous Python requests_ library for making ``HTTP`` calls.
 
 More info and examples on:
 
