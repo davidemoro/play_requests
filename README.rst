@@ -20,13 +20,14 @@ play requests
 
 pytest-play plugin driving the famous python requests library for making HTTP calls
 
+More info and examples on:
 
-* Free software: Apache Software License 2.0
-* Documentation: https://play-requests.readthedocs.io.
+* pytest-play_, documentation
+* cookiecutter-qa_, see ``pytest-play`` in action with a working example if you want to start hacking
 
 
 Features
---------
+========
 
 This pytest-play_ command provider let you drive a
 Python requests_ HTTP library using a json configuration file
@@ -284,13 +285,15 @@ You can disable or enable redirects playing with the ``allow_redirects`` option:
             }
         }
 
-More info and examples on:
+Twitter
+=======
 
-* pytest-play_, documentation
-* cookiecutter-qa_, see ``pytest-play`` in action with a working example if you want to start hacking
+``pytest-play`` tweets happens here:
+
+* `@davidemoro`_
 
 Credits
----------
+=======
 
 This package was created with Cookiecutter_ and the cookiecutter-play-plugin_ (based on `audreyr/cookiecutter-pypackage`_ project template).
 
@@ -302,3 +305,4 @@ This package was created with Cookiecutter_ and the cookiecutter-play-plugin_ (b
 .. _requests: http://docs.python-requests.org/en/master/user/quickstart
 .. _play_requests: https://play_requests.readthedocs.io/en/latest
 .. _play_python: https://play_python.readthedocs.io/en/latest
+.. _`@davidemoro`: https://twitter.com/davidemoro
