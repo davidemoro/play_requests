@@ -2,13 +2,14 @@ import json
 import logging
 import re
 import requests
+from pytest_play.providers import BaseProvider
 
 
-class RequestsProvider(object):
+class RequestsProvider(BaseProvider):
     """ Requests command provider """
 
     def __init__(self, engine):
-        self.engine = engine
+        super(RequestsProvider, self).__init__(engine)
         self.logger = logging.getLogger()
 
     def _make_auth(self, command):
