@@ -188,6 +188,8 @@ and reuse in the following commands::
             }
         }
 
+It the endpoint returns a non JSON response, use ``response.text`` instead.
+
 Default payload
 ---------------
 
