@@ -17,6 +17,9 @@ play requests
      :target: https://pyup.io/repos/github/tierratelematics/play_requests/
      :alt: Updates
 
+.. image:: https://codecov.io/gh/tierratelematics/play_requests/branch/develop/graph/badge.svg
+     :target: https://codecov.io/gh/tierratelematics/play_requests
+
 
 pytest-play plugin driving the famous Python requests_ library for making ``HTTP`` calls.
 
