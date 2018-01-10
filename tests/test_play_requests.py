@@ -784,3 +784,22 @@ def test_post_assertion_bad(assertion, play_json):
         assert history[0].url == 'http://something/1'
         assert history[0].json() == {'foo': 'bar'}
         assert history[0].timeout == 2.5
+
+
+@pytest.mark.parametrize('verb', [
+    'OPTIONS',
+    'HEAD',
+    'PUT',
+    'PATCH',
+    'DELETE',
+])
+def test_other_verbs(verb, play_json):
+    """ """
+    import mock
+    _make_request = mock.MagicMock()
+    from play_requests import providers
+    provider = providers.RequestsProvider(play_json)
+    provider._make_request = _make_request
+    command = {'provider': 'play_requests', 'type': verb}
+    getattr(provider, 'command_{0}'.format(verb))(command, foo='bar')
+    assert _make_request.assert_called_once_with(verb, command) is None
