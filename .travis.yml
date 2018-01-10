@@ -1,8 +1,12 @@
 language: python
 python:
 - 3.6
-install: pip install -U tox-travis
+install:
+- pip install codecov
+- pip install -U tox-travis
 script: tox
+after_success:
+- codecov
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
