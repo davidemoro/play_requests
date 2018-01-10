@@ -245,6 +245,31 @@ def test_get(play_json):
         assert history[0].timeout == 2.5
 
 
+def test_no_parameters(play_json):
+    import requests_mock
+    with requests_mock.mock() as m:
+        m.request('GET',
+                  'http://something/1',
+                  text='OK')
+        mock_engine = play_json
+        mock_engine.variables = {}
+        from play_requests import providers
+        provider = providers.RequestsProvider(mock_engine)
+        assert provider.engine is mock_engine
+        provider.command_GET({
+            'provider': 'play_requests',
+            'type': 'GET',
+            'url': 'http://something/1',
+        })
+
+        history = m.request_history
+        assert len(history) == 1
+        assert history[0].method == 'GET'
+        assert history[0].url == 'http://something/1'
+        # mock requests bug
+        # assert history[0].text == 'OK'
+
+
 def test_get_params_simple(play_json):
     import requests_mock
     with requests_mock.mock() as m:
@@ -784,3 +809,22 @@ def test_post_assertion_bad(assertion, play_json):
         assert history[0].url == 'http://something/1'
         assert history[0].json() == {'foo': 'bar'}
         assert history[0].timeout == 2.5
+
+
+@pytest.mark.parametrize('verb', [
+    'OPTIONS',
+    'HEAD',
+    'PUT',
+    'PATCH',
+    'DELETE',
+])
+def test_other_verbs(verb, play_json):
+    """ """
+    import mock
+    _make_request = mock.MagicMock()
+    from play_requests import providers
+    provider = providers.RequestsProvider(play_json)
+    provider._make_request = _make_request
+    command = {'provider': 'play_requests', 'type': verb}
+    getattr(provider, 'command_{0}'.format(verb))(command, foo='bar')
+    assert _make_request.assert_called_once_with(verb, command) is None

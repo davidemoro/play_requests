@@ -13,7 +13,7 @@ with open('CHANGES.rst') as history_file:
 
 requirements = [
     'requests',
-    'pytest-play',
+    'pytest-play>=1.0.0',
     'play_python',
 ]
 
@@ -30,7 +30,7 @@ test_requirements = [
 
 setup(
     name='play_requests',
-    version='0.0.1',
+    version='0.0.2.dev0',
     description="pytest-play plugin driving the famous "
                 "Python requests library for making HTTP calls",
     long_description=readme + '\n\n' + history,

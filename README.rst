@@ -13,12 +13,11 @@ play requests
         :target: https://play-requests.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://pyup.io/repos/github/tierratelematics/play_requests/shield.svg
-     :target: https://pyup.io/repos/github/tierratelematics/play_requests/
-     :alt: Updates
+.. image:: https://codecov.io/gh/tierratelematics/play_requests/branch/develop/graph/badge.svg
+     :target: https://codecov.io/gh/tierratelematics/play_requests
 
 
-pytest-play plugin driving the famous python requests library for making HTTP calls
+pytest-play plugin driving the famous Python requests_ library for making ``HTTP`` calls.
 
 More info and examples on:
 
