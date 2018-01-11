@@ -92,9 +92,9 @@ class RequestsProvider(BaseProvider):
                 a[key] = b[key]
         return a
 
-    def _make_assertion(self, response, command):
+    def _make_assertion(self, command, **kwargs):
         """ Make an assertion based on python
-            expression against the response
+            expression against kwargs
         """
         assertion = command.get('assertion', None)
         if assertion:
@@ -103,24 +103,23 @@ class RequestsProvider(BaseProvider):
                  'type': 'assert',
                  'expression': assertion
                  },
-                response=response,
+                **kwargs,
             )
 
-    def _make_variable(self, response, command):
+    def _make_variable(self, command, **kwargs):
         """ Make a variable based on python
-            expression against the response
+            expression against kwargs
         """
         expression = command.get('variable_expression', None)
         if expression:
-            self.engine.variables[
-                command['variable']] = self \
-                    .engine.execute_command(
-                        {'provider': 'python',
-                         'type': 'exec',
-                         'expression': expression
-                         },
-                        response=response,
-                    )
+            self.engine.execute_command(
+                {'provider': 'python',
+                 'type': 'store_variable',
+                 'name': command['variable'],
+                 'expression': expression
+                 },
+                **kwargs,
+            )
 
     def _condition(self, command):
         """ Execute a command condition
@@ -157,8 +156,8 @@ class RequestsProvider(BaseProvider):
                 url,
                 **cmd['parameters'])
             try:
-                self._make_variable(response, cmd)
-                self._make_assertion(response, cmd)
+                self._make_variable(cmd, response=response)
+                self._make_assertion(cmd, response=response)
             except Exception as e:
                 self.logger.exception(
                     'Exception for command %r',
