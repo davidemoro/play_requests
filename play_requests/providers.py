@@ -59,39 +59,6 @@ class RequestsProvider(BaseProvider):
         """ Update cookies on the command """
         self.logger.warning('cookies not yet implemented')
 
-    def _merge_payload(self, command):
-        """ Merge command with the default command available in
-            self.engine.variables['requests']['default_payload']
-        """
-        play_requests = self.engine.variables.get('play_requests', {})
-        if play_requests:
-            default = json.loads(
-                self.engine.parametrizer.parametrize(
-                    json.dumps(play_requests)))
-            if play_requests:
-                return self._merge(default, command)
-        return command
-
-    def _merge(self, a, b, path=None):
-        """ merges b and a configurations.
-            Based on http://bit.ly/2uFUHgb
-         """
-        if path is None:
-            path = []
-
-        for key in b:
-            if key in a:
-                if isinstance(a[key], dict) and isinstance(b[key], dict):
-                    self._merge(a[key], b[key], path + [str(key)])
-                elif a[key] == b[key]:
-                    pass  # same leaf value
-                else:
-                    # b wins
-                    a[key] = b[key]
-            else:
-                a[key] = b[key]
-        return a
-
     def _make_assertion(self, command, **kwargs):
         """ Make an assertion based on python
             expression against kwargs
@@ -143,7 +110,6 @@ class RequestsProvider(BaseProvider):
             cmd = command.copy()
             url = cmd['url']
 
-            cmd = self._merge_payload(cmd)
             self._make_auth(cmd)
             self._make_files(cmd)
             self.logger.debug('Requests call %r', cmd)
