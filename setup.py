@@ -30,7 +30,7 @@ test_requirements = [
 
 setup(
     name='play_requests',
-    version='0.0.2.dev0',
+    version='0.0.2',
     description="pytest-play plugin driving the famous "
                 "Python requests library for making HTTP calls",
     long_description=readme + '\n\n' + history,
