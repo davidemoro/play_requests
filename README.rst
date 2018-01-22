@@ -26,7 +26,7 @@ More info and examples on:
 
 
 Features
-========
+--------
 
 This pytest-play_ command provider let you drive a
 Python requests_ HTTP library using a json configuration file
@@ -91,7 +91,7 @@ because this package is still under development.
 You'll find other play_requests_ command examples in the following sections.
 
 Upload files
-------------
+============
 
 Post a csv file::
 
@@ -143,7 +143,7 @@ Post a file providing the path::
 assuming that you have a ``$base_path`` variable.
 
 Save the response to a variable
--------------------------------
+===============================
 
 You can save a response elaboration to a pytest-play_ variable
 and reuse in the following commands::
@@ -166,7 +166,7 @@ and reuse in the following commands::
 It the endpoint returns a non JSON response, use ``response.text`` instead.
 
 Default payload
----------------
+===============
 
 If all your requests have a common payload it might be annoying
 but thanks to play_requests_ you can avoid repetitions.
@@ -210,7 +210,7 @@ Merging rules:
   call the default conflicting header value
 
 Assert response status code
----------------------------
+===========================
 
 ::
 
@@ -235,7 +235,7 @@ The ``raise_for_status`` call will raise an ``HTTPError`` if the ``HTTP`` reques
 returned an unsuccessful status code.
 
 Redirections
-------------
+============
 
 By default requests_ will perform location redirection for all verbs
 except HEAD:
@@ -260,14 +260,14 @@ You can disable or enable redirects playing with the ``allow_redirects`` option:
         }
 
 Twitter
-=======
+-------
 
 ``pytest-play`` tweets happens here:
 
 * `@davidemoro`_
 
 Credits
-=======
+-------
 
 This package was created with Cookiecutter_ and the cookiecutter-play-plugin_ (based on `audreyr/cookiecutter-pypackage`_ project template).
 

@@ -7,6 +7,8 @@ CHANGES
 
 - remove condition option (already implemented by pytest-play's ``skip_condition``)
 
+- documentation improvements
+
 
 0.0.2 (2018-01-16)
 ------------------
