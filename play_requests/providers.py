@@ -88,48 +88,31 @@ class RequestsProvider(BaseProvider):
                 **kwargs,
             )
 
-    def _condition(self, command):
-        """ Execute a command condition
-        """
-        return_value = False
-        condition = command.get('condition', None)
-        if condition:
-            return_value = self.engine.execute_command(
-                {'provider': 'python',
-                 'type': 'exec',
-                 'expression': condition
-                 }
-            )
-        else:
-            return_value = True
-        return return_value
-
     def _make_request(self, method, command):
         """ Make a request plus assertions """
-        if self._condition(command):
-            cmd = command.copy()
-            url = cmd['url']
+        cmd = command.copy()
+        url = cmd['url']
 
-            self._make_auth(cmd)
-            self._make_files(cmd)
-            self.logger.debug('Requests call %r', cmd)
-            if 'parameters' not in cmd:
-                cmd['parameters'] = {}
+        self._make_auth(cmd)
+        self._make_files(cmd)
+        self.logger.debug('Requests call %r', cmd)
+        if 'parameters' not in cmd:
+            cmd['parameters'] = {}
 
-            self.logger.debug('Effective HTTP call %r', cmd)
-            response = requests.request(
-                method,
-                url,
-                **cmd['parameters'])
-            try:
-                self._make_variable(cmd, response=response)
-                self._make_assertion(cmd, response=response)
-            except Exception as e:
-                self.logger.exception(
-                    'Exception for command %r',
-                    cmd,
-                    e)
-                raise e
+        self.logger.debug('Effective HTTP call %r', cmd)
+        response = requests.request(
+            method,
+            url,
+            **cmd['parameters'])
+        try:
+            self._make_variable(cmd, response=response)
+            self._make_assertion(cmd, response=response)
+        except Exception as e:
+            self.logger.exception(
+                'Exception for command %r',
+                cmd,
+                e)
+            raise e
 
     def command_OPTIONS(self, command, **kwargs):
         """ OPTIONS command """
