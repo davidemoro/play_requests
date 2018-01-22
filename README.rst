@@ -185,8 +185,9 @@ the play_python_ ``exec`` command::
         },
         {
             "provider": "python",
-            "type": "exec",
-            "expression": "variables.update({'play_requests': {'parameters': {'headers': {'Authorization': '$bearer'}}}})"
+            "type": "store_variable",
+            "name": "play_requests",
+            "expression": "{'parameters': {'headers': {'Authorization': '$bearer'}}}"
         },
         {
              "provider": "play_requests",
