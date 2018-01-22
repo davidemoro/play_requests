@@ -90,31 +90,6 @@ because this package is still under development.
 
 You'll find other play_requests_ command examples in the following sections.
 
-Condition
----------
-
-::
-
-    {
-        "provider": "play_requests",
-        "type": "POST",
-        "url": "http://something/1",
-        "condition": "1 > 0",
-        "parameters": {
-            "json": {
-                "foo": "bar",
-            },
-            "timeout": 2.5
-        }
-    }
-
-the ``condition`` option let you execute Python expressions thanks to the play_python_ plugin.
-
-Other ``condition`` examples:
-
-* ``"$myvar" == 'dev'``
-* ``variables["myvar"] == 'dev'``
-
 Upload files
 ------------
 
