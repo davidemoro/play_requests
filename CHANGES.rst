@@ -2,10 +2,18 @@
 CHANGES
 =======
 
-0.0.3 (unreleased)
+0.0.4 (unreleased)
 ------------------
 
 - Nothing changed yet.
+
+
+0.0.3 (2018-01-22)
+------------------
+
+- remove condition option (already implemented by pytest-play's ``skip_condition``)
+
+- documentation improvements
 
 
 0.0.2 (2018-01-16)
