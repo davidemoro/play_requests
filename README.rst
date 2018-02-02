@@ -41,7 +41,7 @@ by the play_requests_ plugin:
          "steps": [{
              "provider": "play_requests",
              "type": "GET",
-             "assert": "'pytest-play' in response.json()",
+             "assertion": "'pytest-play' in response.json()",
              "url": "https://www.google.it/complete/search",
              "parameters": {
                  "headers": {
