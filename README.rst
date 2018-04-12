@@ -6,15 +6,15 @@ play requests
 .. image:: https://img.shields.io/pypi/v/play_requests.svg
         :target: https://pypi.python.org/pypi/play_requests
 
-.. image:: https://img.shields.io/travis/tierratelematics/play_requests.svg
-        :target: https://travis-ci.org/tierratelematics/play_requests
+.. image:: https://img.shields.io/travis/davidemoro/play_requests.svg
+        :target: https://travis-ci.org/davidemoro/play_requests
 
 .. image:: https://readthedocs.org/projects/play-requests/badge/?version=latest
         :target: https://play-requests.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
-.. image:: https://codecov.io/gh/tierratelematics/play_requests/branch/develop/graph/badge.svg
-     :target: https://codecov.io/gh/tierratelematics/play_requests
+.. image:: https://codecov.io/gh/davidemoro/play_requests/branch/develop/graph/badge.svg
+     :target: https://codecov.io/gh/davidemoro/play_requests
 
 
 pytest-play plugin driving the famous Python requests_ library for making ``HTTP`` calls.
@@ -274,9 +274,9 @@ This package was created with Cookiecutter_ and the cookiecutter-play-plugin_ (b
 
 .. _Cookiecutter: https://github.com/audreyr/cookiecutter
 .. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
-.. _`cookiecutter-play-plugin`: https://github.com/tierratelematics/cookiecutter-play-plugin
-.. _pytest-play: https://github.com/tierratelematics/pytest-play
-.. _cookiecutter-qa: https://github.com/tierratelematics/cookiecutter-qa
+.. _`cookiecutter-play-plugin`: https://github.com/davidemoro/cookiecutter-play-plugin
+.. _pytest-play: https://github.com/pytest-dev/pytest-play
+.. _cookiecutter-qa: https://github.com/davidemoro/cookiecutter-qa
 .. _requests: http://docs.python-requests.org/en/master/user/quickstart
 .. _play_requests: https://play_requests.readthedocs.io/en/latest
 .. _play_python: https://play_python.readthedocs.io/en/latest
