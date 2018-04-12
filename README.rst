@@ -6,8 +6,8 @@ play requests
 .. image:: https://img.shields.io/pypi/v/play_requests.svg
         :target: https://pypi.python.org/pypi/play_requests
 
-.. image:: https://img.shields.io/travis/davidemoro/play_requests.svg
-        :target: https://travis-ci.org/davidemoro/play_requests
+.. image:: https://travis-ci.org/davidemoro/play_requests.svg?branch=develop
+       :target: https://travis-ci.org/davidemoro/play_requests
 
 .. image:: https://readthedocs.org/projects/play-requests/badge/?version=latest
         :target: https://play-requests.readthedocs.io/en/latest/?badge=latest
