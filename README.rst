@@ -29,7 +29,7 @@ Features
 --------
 
 This pytest-play_ command provider let you drive a
-Python requests_ HTTP library using a json configuration file
+Python requests_ HTTP library using a YAML configuration file
 containing a set of pytest-play_ commands.
 
 you can see a pytest-play_ script powered by a command provided
@@ -177,9 +177,6 @@ the play_python_ ``exec`` command::
 
 and all the following HTTP calls will be performed with the authorization bearer provided in the default
 payload.
-
-We suggest to define variables and update play_requests defaults programmatically, use json only for trivial
-examples.
 
 Merging rules:
 
