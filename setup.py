@@ -13,7 +13,7 @@ with open('CHANGES.rst') as history_file:
 
 requirements = [
     'requests',
-    'pytest-play>=1.2.0',
+    'pytest-play>=2.0.0',
 ]
 
 setup_requirements = [
@@ -35,7 +35,7 @@ setup(
     long_description=readme + '\n\n' + history,
     author="Davide Moro",
     author_email='davide.moro@gmail.com',
-    url='https://github.com/tierratelematics/play_requests',
+    url='https://github.com/davidemoro/play_requests',
     packages=find_packages(include=['play_requests']),
     entry_points={
         'playcommands': [
