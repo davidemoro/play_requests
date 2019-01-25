@@ -12,13 +12,13 @@ def variables():
     return {'skins': {'skin1': {'base_url': 'http://', 'credentials': {}}}}
 
 
-def test_post1(play_json):
+def test_post1(play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('POST',
                   'http://something/1',
                   json={'status': 'ok'})
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -43,13 +43,13 @@ def test_post1(play_json):
         assert history[0].timeout == 2.5
 
 
-def test_post_variables(play_json):
+def test_post_variables(play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('POST',
                   'http://something/1',
                   json={'status': 'ok'})
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -78,13 +78,13 @@ def test_post_variables(play_json):
         assert history[0].timeout == 2.5
 
 
-def test_post_variables_assert(play_json):
+def test_post_variables_assert(play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('POST',
                   'http://something/1',
                   json={'status': 'ok'})
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -114,13 +114,13 @@ def test_post_variables_assert(play_json):
         assert history[0].timeout == 2.5
 
 
-def test_post_variables_assert_ko(play_json):
+def test_post_variables_assert_ko(play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('POST',
                   'http://something/1',
                   json={'status': 'KO'})
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -151,13 +151,13 @@ def test_post_variables_assert_ko(play_json):
         assert history[0].timeout == 2.5
 
 
-def test_get(play_json):
+def test_get(play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('GET',
                   'http://something/1',
                   text='OK')
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -180,13 +180,13 @@ def test_get(play_json):
         assert history[0].timeout == 2.5
 
 
-def test_no_parameters(play_json):
+def test_no_parameters(play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('GET',
                   'http://something/1',
                   text='OK')
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -205,13 +205,13 @@ def test_no_parameters(play_json):
         # assert history[0].text == 'OK'
 
 
-def test_get_params_simple(play_json):
+def test_get_params_simple(play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('GET',
                   'http://something/1',
                   text='OK')
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -235,14 +235,14 @@ def test_get_params_simple(play_json):
         assert history[0].timeout == 2.5
 
 
-def test_get_params_multi(play_json):
+def test_get_params_multi(play):
     import requests_mock
     import re
     with requests_mock.mock() as m:
         m.request('GET',
                   'http://something/1',
                   text='OK')
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -271,7 +271,7 @@ def test_get_params_multi(play_json):
         assert history[0].timeout == 2.5
 
 
-def test_post_headers(play_json):
+def test_post_headers(play):
     import requests_mock
     with requests_mock.mock() as m:
         headers = {'user-agent': 'my-app/0.0.1'}
@@ -279,7 +279,7 @@ def test_post_headers(play_json):
                   'http://something/1',
                   request_headers=headers,
                   json={'status': 'ok'})
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -365,11 +365,11 @@ def test_post_headers(play_json):
          },
      },
 ])
-def test_post_files(command, play_json):
+def test_post_files(command, play):
     import mock
     with mock.patch('play_requests.providers.requests.request') \
             as mock_requests:
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -382,7 +382,7 @@ def test_post_files(command, play_json):
             files=command['parameters']['files']) is None
 
 
-def test_post_files_path(play_json):
+def test_post_files_path(play):
     file_path = os.path.join(os.path.dirname(__file__), 'file.csv')
     command = {
          'provider': 'play_requests',
@@ -404,7 +404,7 @@ def test_post_files_path(play_json):
                 as mock_open:
             file_mock = mock.MagicMock()
             mock_open.return_value = file_mock
-            mock_engine = play_json
+            mock_engine = play
             mock_engine.variables = {}
             from play_requests import providers
             provider = providers.RequestsProvider(mock_engine)
@@ -432,13 +432,13 @@ def test_post_files_path(play_json):
     'match(r"^([0-9]*)-data", "123-data")',
     'match(r"^([0-9]*)-data", "123-data").group(1) == "123"'
 ])
-def test_post_assertion(assertion, play_json):
+def test_post_assertion(assertion, play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('POST',
                   'http://something/1',
                   json={'status': 'ok'})
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {'foo': 'baz'}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -464,13 +464,13 @@ def test_post_assertion(assertion, play_json):
         assert history[0].timeout == 2.5
 
 
-def test_post_assertion_ko(play_json):
+def test_post_assertion_ko(play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('POST',
                   'http://something/1',
                   json={'status': 'ok'})
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {'foo': 'baz'}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -508,13 +508,13 @@ def test_post_assertion_ko(play_json):
     'prova = lambda: 1',
     'os = 1',
 ])
-def test_post_assertion_bad(assertion, play_json):
+def test_post_assertion_bad(assertion, play):
     import requests_mock
     with requests_mock.mock() as m:
         m.request('POST',
                   'http://something/1',
                   json={'status': 'ok'})
-        mock_engine = play_json
+        mock_engine = play
         mock_engine.variables = {'foo': 'baz'}
         from play_requests import providers
         provider = providers.RequestsProvider(mock_engine)
@@ -548,12 +548,12 @@ def test_post_assertion_bad(assertion, play_json):
     'PATCH',
     'DELETE',
 ])
-def test_other_verbs(verb, play_json):
+def test_other_verbs(verb, play):
     """ """
     import mock
     _make_request = mock.MagicMock()
     from play_requests import providers
-    provider = providers.RequestsProvider(play_json)
+    provider = providers.RequestsProvider(play)
     provider._make_request = _make_request
     command = {'provider': 'play_requests', 'type': verb}
     getattr(provider, 'command_{0}'.format(verb))(command, foo='bar')
