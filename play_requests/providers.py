@@ -12,10 +12,6 @@ class RequestsProvider(BaseProvider):
         super(RequestsProvider, self).__init__(engine)
         self.logger = logging.getLogger()
 
-    def _make_auth(self, command):
-        """ Update auth on the command """
-        self.logger.warning('auth not yet implemented')
-
     def _make_files(self, command):
         """ Update files on the command
 
@@ -55,10 +51,6 @@ class RequestsProvider(BaseProvider):
                     results[key] = (filename, file_data)
             command['parameters']['files'] = results
 
-    def _make_cookies(self, command):
-        """ Update cookies on the command """
-        self.logger.warning('cookies not yet implemented')
-
     def _make_assertion(self, command, **kwargs):
         """ Make an assertion based on python
             expression against kwargs
@@ -93,14 +85,14 @@ class RequestsProvider(BaseProvider):
         cmd = command.copy()
         url = cmd['url']
 
-        self._make_auth(cmd)
         self._make_files(cmd)
         self.logger.debug('Requests call %r', cmd)
         if 'parameters' not in cmd:
             cmd['parameters'] = {}
 
         self.logger.debug('Effective HTTP call %r', cmd)
-        response = requests.request(
+        session = requests.Session()
+        response = session.request(
             method,
             url,
             **cmd['parameters'])
