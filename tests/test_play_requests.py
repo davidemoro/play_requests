@@ -367,7 +367,7 @@ def test_post_headers(play):
 ])
 def test_post_files(command, play):
     import mock
-    with mock.patch('play_requests.providers.requests.request') \
+    with mock.patch('play_requests.providers.requests') \
             as mock_requests:
         mock_engine = play
         mock_engine.variables = {}
@@ -376,10 +376,14 @@ def test_post_files(command, play):
         assert provider.engine is mock_engine
         provider.command_POST(command)
 
-        assert mock_requests.assert_called_once_with(
-            command['type'],
-            command['url'],
-            files=command['parameters']['files']) is None
+        assert mock_requests \
+            .Session \
+            .return_value \
+            .request \
+            .assert_called_once_with(
+                command['type'],
+                command['url'],
+                files=command['parameters']['files']) is None
 
 
 def test_post_files_path(play):
@@ -398,7 +402,7 @@ def test_post_files_path(play):
              },
          }
     import mock
-    with mock.patch('play_requests.providers.requests.request') \
+    with mock.patch('play_requests.providers.requests') \
             as mock_requests:
         with mock.patch('play_requests.providers.open') \
                 as mock_open:
@@ -410,10 +414,14 @@ def test_post_files_path(play):
             provider = providers.RequestsProvider(mock_engine)
             assert provider.engine is mock_engine
             provider.command_POST(command)
-            assert mock_requests.assert_called_once_with(
-                command['type'],
-                command['url'],
-                files={'filecsv': ('file.csv', file_mock)}) is None
+            assert mock_requests \
+                .Session \
+                .return_value \
+                .request \
+                .assert_called_once_with(
+                    command['type'],
+                    command['url'],
+                    files={'filecsv': ('file.csv', file_mock)}) is None
             assert mock_open.assert_called_once_with(
                 file_path, 'rb') is None
 

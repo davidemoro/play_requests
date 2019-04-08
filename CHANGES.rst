@@ -5,7 +5,8 @@ CHANGES
 0.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Manages cookies and prepare them for you so you don't have to create cookie
+  headers by yourself using the ``auth=('username', 'password')``
 
 
 0.0.4 (2019-01-25)

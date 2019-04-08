@@ -89,10 +89,21 @@ play_requests_ supports all the HTTP verbs supported by the requests_ library:
 * PATCH
 * DELETE
 
-**NOTES:** cookies and auth implementations supported by requests_ are not yet implemented
-because this package is still under development.
-
 You'll find other play_requests_ command examples in the following sections.
+
+Authentication cookies
+======================
+
+Manages cookies and prepare them for you so you don't have to create
+cookie headers by yourself using the ``auth=('username', 'password')``::
+
+    - provider: play_requests
+      type: GET
+      url: http://something/authenticated
+      parameters:
+        auth:
+          - username
+          - password
 
 Upload files
 ============
