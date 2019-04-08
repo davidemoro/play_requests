@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-0.0.5 (unreleased)
+0.0.5 (2019-04-08)
 ------------------
 
 - Manages cookies and prepare them for you so you don't have to create cookie
